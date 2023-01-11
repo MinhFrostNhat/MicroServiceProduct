@@ -22,11 +22,11 @@ jobs:
         users: actions/checkout@v3
 
       - name: Setup Java
-        uses: actions/setup-java@v3
+        users: actions/setup-java@v3
         with:
           java-version: "11"
           distribution: "temurin"
           cache: gradle
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+        users: gradle/gradle-build-action@v2
         run: ./gradlew build
