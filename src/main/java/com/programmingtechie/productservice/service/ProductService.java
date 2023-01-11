@@ -27,6 +27,8 @@ public class ProductService {
     }
 
     public CreateNewResponse createProduct(@NotNull ProductRequest productRequest){
+        //
+        //
         Product product = Product.builder()
                 .name(productRequest.getName())
                 .description(productRequest.getDescription())
