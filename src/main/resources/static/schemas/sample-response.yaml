@@ -1,0 +1,23 @@
+CreateNewResponse:
+  type: object
+  properties:
+    message:
+      type: string
+      description: ''
+      example: 'Created'
+      default: 'Created'
+    code:
+      type: integer
+      default: 201
+      example: 201
+
+GetAllProduct:
+  type: object
+  title: get all product
+  properties:
+    getProduct:
+      type: array
+      items:
+        $ref: './sample-request.yaml#/ProductRequest'
+    required:
+      - getProduct

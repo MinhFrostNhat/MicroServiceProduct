@@ -1,0 +1,29 @@
+spring:
+  h2:
+    console:
+      enabled: true
+  main:
+    banner-mode: off
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        show_sql: true
+        format_sql: true
+        ddl-auto: update
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: true
+    generate-ddl: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/productService
+    username: test
+    password: test
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    enabled: true
+    changeLog: liquibase/changelog-master.yml
+
+server:
+  port: 8080

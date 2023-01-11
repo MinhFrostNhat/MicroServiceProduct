@@ -1,0 +1,96 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.7.7'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	//  create OpenAPI
+	id 'org.openapi.generator' version "$openApiVersion"
+}
+
+group = 'com.programmingtechie'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+springBoot{
+	mainClass ='com.programmingtechie.productservice.ProductServiceApplication'
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'org.postgresql:postgresql'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// https://mvnrepository.com/artifact/org.modelmapper/modelmapper
+	implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.0.0'
+
+	// create openAPI
+	// https://mvnrepository.com/artifact/org.openapitools/openapi-generator-gradle-plugin
+	implementation group: 'org.openapitools', name: 'openapi-generator-gradle-plugin', version: '6.2.0'
+    // for generate resource for openAPI
+	// https://mvnrepository.com/artifact/org.openapitools/jackson-databind-nullable
+	implementation group: 'org.openapitools', name: 'jackson-databind-nullable', version: '0.2.1'
+
+	//for openAPI swaggerUi
+	implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.9'
+
+	//for liquibase
+	implementation 'org.liquibase:liquibase-core'
+
+	// JDBC
+	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+
+	// for log
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-logging
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-logging', version: '2.6.8'
+
+	//for swaggerUI
+	// https://mvnrepository.com/artifact/io.springfox/springfox-swagger2
+	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+	// https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
+	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+
+
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile){
+	dependsOn(tasks.openApiGenerate)
+}
+
+openApiGenerate {
+	inputSpec = "$rootDir/src/main/resources/static/openapi.yaml".toString()
+	generatorName = "spring"
+	library = "spring-boot"
+	outputDir.set("$buildDir/generated-resources")
+	apiPackage = "com.example.api"
+	invokerPackage = "com.example.api"
+	modelPackage = "com.example.model"
+	configOptions = [
+			useTags: "true",
+			dateLibrary: "java8"
+	]
+}
+
+String relativePathToOpenApiGeneratedCode = "src/main/java"
+String openApiOutputDir = "$buildDir/generated-resources"
+java.sourceSets["main"].java.srcDir("$openApiOutputDir/$relativePathToOpenApiGeneratedCode")
+
+configurations.all {
+	exclude module: 'slf4j-log4j12'
+}

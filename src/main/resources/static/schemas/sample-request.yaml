@@ -1,0 +1,21 @@
+ProductRequest:
+  type: object
+  properties:
+      id:
+        type: string
+        format: uuid
+        description: 'id field'
+        example: ""
+      name:
+        type: string
+        description: 'name field'
+        example: '???'
+      description:
+        type: string
+        description: 'description'
+        example: '???'
+      price:
+        type: number
+        format: double
+        description: 'price'
+        example: 20.02

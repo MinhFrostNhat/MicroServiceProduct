@@ -1,0 +1,117 @@
+openapi: 3.0.3
+
+info:
+  title: Product OpenAPI
+  version: 1.0.0
+  description: The sample of running openAPI
+
+tags:
+  - name: Sample
+    description: Operations related
+
+servers:
+  - url: http://localhost:8080/v1/api
+    description: local server
+
+paths:
+  /product:
+    post:
+      tags:
+        - Product
+      description: create product
+      operationId: createProduct
+      parameters:
+        - in: header
+          name: Request-Id
+          schema:
+            type: string
+            example: uuid
+          required: true
+      requestBody:
+        description: create new product
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './schemas/sample-request.yaml#/ProductRequest'
+      responses:
+        201:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/sample-response.yaml#/CreateNewResponse'
+        400:
+          description: Bad request. Please check again whether input is valid (e.g. missing required/mandatory field).
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/problem.yaml#/ErrorResponse'
+        401:
+          description: Unauthenticated. Please check whether token is empty or invalid
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/problem.yaml#/ErrorResponse'
+        404:
+          description: Not found. Please check again API path and baseURL (e.g. missing path variables).
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/problem.yaml#/ErrorResponse'
+        403:
+          description: Forbidden. Please check whether authenticated user has sufficient authority
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/problem.yaml#/ErrorResponse'
+        500:
+          description: INTERNAL_SEVER_ERROR
+          content:
+            'application/json;version=1':
+              schema:
+                $ref: './schemas/problem.yaml#/ErrorResponse'
+
+  /checkproduct:
+    get:
+      tags:
+        - Product
+      description: get all product
+      operationId: getAllProduct
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/sample-response.yaml#/GetAllProduct'
+        400:
+          description: Bad request. Please check again whether input is valid (e.g. missing required/mandatory field).
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/problem.yaml#/ErrorResponse'
+        401:
+            description: Unauthenticated. Please check whether token is empty or invalid
+            content:
+              application/json:
+                schema:
+                  $ref: './schemas/problem.yaml#/ErrorResponse'
+        404:
+            description: Not found. Please check again API path and baseURL (e.g. missing path variables).
+            content:
+              application/json:
+                schema:
+                  $ref: './schemas/problem.yaml#/ErrorResponse'
+        403:
+            description: Forbidden. Please check whether authenticated user has sufficient authority
+            content:
+              application/json:
+                schema:
+                  $ref: './schemas/problem.yaml#/ErrorResponse'
+        500:
+            description: INTERNAL_SEVER_ERROR
+            content:
+              'application/json;version=1':
+                schema:
+                  $ref: './schemas/problem.yaml#/ErrorResponse'

@@ -1,0 +1,20 @@
+ErrorResponse:
+  type: object
+  title: 'Object describing problem which occurred during application working'
+  properties:
+    name:
+      type: string
+      description: 'A short summary of the problem type. Readable for engineers'
+      example: 'Invalid input from client 4xx'
+    message:
+      type: string
+      description: 'A human readable explanation specific to this occurrence'
+      example: 'Please check again whether input is valid (e.g. missing required/mandatory field)'
+    errorId:
+      type: string
+      description: 'ID which allows to trace flow of execution across many systems'
+      example: '4xx'
+  required:
+    - name
+    - message
+    - errorId
