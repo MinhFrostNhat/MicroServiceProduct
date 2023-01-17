@@ -39,7 +39,7 @@ public class ProductControllerTest {
     private Integer port;
 
 
-    private final String CALL_URI_POST_PRODUCT = "/product";
+    private final String CALL_URI_POST_PRODUCT = "/v1/api/product";
     private final String CALL_URI_GET_PRODUCT = "/v1/api/checkproduct";
 
     private MockMvc mockMvc;
@@ -52,7 +52,7 @@ public class ProductControllerTest {
 
 
     @Autowired
-    private MappingJackson2HttpMessageConverter jackson2HttpMessageConverter;
+    private MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter;
 
     @Autowired
     private PageableHandlerMethodArgumentResolver pageableHandlerMethodArgumentResolver;
@@ -64,7 +64,7 @@ public class ProductControllerTest {
     public void setup() {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(productController)
-                .setMessageConverters(jackson2HttpMessageConverter)
+                .setMessageConverters(mappingJackson2HttpMessageConverter)
                 .setCustomArgumentResolvers(pageableHandlerMethodArgumentResolver)
                 .build();
 
@@ -115,21 +115,20 @@ public class ProductControllerTest {
     }
 
 
-//    @Test
-//    public void shouldReturnSuccessWhenGetProduct() throws Exception {
-//        String productAsString = objectMapper.writeValueAsString(initProduct());
-//        String productAsString1 = objectMapper.writeValueAsString(initProduct1());
-//        mockMvc.perform(MockMvcRequestBuilders.post(CALL_URI_POST_PRODUCT )
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(productAsString))
-//                .andExpect(status().is(200));
-//        mockMvc.perform(MockMvcRequestBuilders.post(CALL_URI_POST_PRODUCT )
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(productAsString1))
-//                .andExpect(status().is(200));
-//        mockMvc.perform(MockMvcRequestBuilders.get(CALL_URI_GET_PRODUCT)
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().is(200))
-//                .andExpect(jsonPath("$.getProduct").value(List.of(productAsString,productAsString1)));
-//    }
+    @Test
+    public void shouldReturnSuccessWhenGetProduct() throws Exception {
+        String productAsString = objectMapper.writeValueAsString(initProduct());
+        String productAsString1 = objectMapper.writeValueAsString(initProduct1());
+        mockMvc.perform(MockMvcRequestBuilders.post(CALL_URI_POST_PRODUCT )
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(productAsString))
+                .andExpect(status().is(200));
+        mockMvc.perform(MockMvcRequestBuilders.post(CALL_URI_POST_PRODUCT )
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(productAsString1))
+                .andExpect(status().is(200));
+        mockMvc.perform(MockMvcRequestBuilders.get(CALL_URI_GET_PRODUCT))
+                .andExpect(status().is(200))
+                .andExpect(jsonPath("$.getProduct").isArray());
+    }
 }
