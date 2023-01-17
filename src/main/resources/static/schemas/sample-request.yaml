@@ -1,16 +1,12 @@
 ProductRequest:
   type: object
   properties:
-      id:
-        type: string
-        format: uuid
-        description: 'id field'
-        example: ""
-      name:
+      nameOfProduct:
         type: string
         description: 'name field'
         example: '???'
-      description:
+        nullable: false
+      descriptionProduct:
         type: string
         description: 'description'
         example: '???'
@@ -19,3 +15,6 @@ ProductRequest:
         format: double
         description: 'price'
         example: 20.02
+  required:
+    - nameOfProduct
+    - descriptionProduct
