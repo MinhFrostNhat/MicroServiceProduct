@@ -4,6 +4,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 	//  create OpenAPI
 	id 'org.openapi.generator' version "$openApiVersion"
+	id 'org.asciidoctor.convert' version '1.5.8'
 }
 
 group = 'com.programmingtechie'
@@ -31,17 +32,23 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// https://mvnrepository.com/artifact/com.h2database/h2
+	testImplementation group: 'com.h2database', name: 'h2', version: '1.3.164'
 
 	// https://mvnrepository.com/artifact/org.modelmapper/modelmapper
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.0.0'
 
-	// create openAPI
-	// https://mvnrepository.com/artifact/org.openapitools/openapi-generator-gradle-plugin
-	implementation group: 'org.openapitools', name: 'openapi-generator-gradle-plugin', version: '6.2.0'
-    // for generate resource for openAPI
-	// https://mvnrepository.com/artifact/org.openapitools/jackson-databind-nullable
+
+	// https://mvnrepository.com/artifact/io.swagger/swagger-annotations
+	implementation group: 'io.swagger', name: 'swagger-annotations', version: '1.5.22'
+// https://mvnrepository.com/artifact/io.springfox/springfox-swagger2
+	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+// https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
+	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+// https://mvnrepository.com/artifact/org.openapitools/jackson-databind-nullable
 	implementation group: 'org.openapitools', name: 'jackson-databind-nullable', version: '0.2.1'
+
 
 	//for openAPI swaggerUi
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.9'
@@ -56,14 +63,15 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-logging
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-logging', version: '2.6.8'
 
-	//for swaggerUI
-	// https://mvnrepository.com/artifact/io.springfox/springfox-swagger2
-	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
-	// https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
-	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+
+	//for testing
+	// https://mvnrepository.com/artifact/com.ninja-squad/springmockk
+	implementation group: 'com.ninja-squad', name: 'springmockk', version: '3.0.1'
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
 
 }
+
 
 tasks.named('test') {
 	useJUnitPlatform()
@@ -76,16 +84,17 @@ tasks.withType(JavaCompile){
 openApiGenerate {
 	inputSpec = "$rootDir/src/main/resources/static/openapi.yaml".toString()
 	generatorName = "spring"
-	library = "spring-boot"
 	outputDir.set("$buildDir/generated-resources")
 	apiPackage = "com.example.api"
 	invokerPackage = "com.example.api"
 	modelPackage = "com.example.model"
 	configOptions = [
-			useTags: "true",
-			dateLibrary: "java8"
+			useTags: "true"
 	]
+
 }
+
+
 
 String relativePathToOpenApiGeneratedCode = "src/main/java"
 String openApiOutputDir = "$buildDir/generated-resources"

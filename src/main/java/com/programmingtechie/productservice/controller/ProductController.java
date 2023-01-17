@@ -6,7 +6,10 @@ import com.example.model.GetAllProduct;
 import com.example.model.ProductRequest;
 import com.programmingtechie.productservice.service.ProductService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.constraints.NotNull;
 
 @RestController
 public class ProductController implements ProductApi {
@@ -17,11 +20,11 @@ public class ProductController implements ProductApi {
         this.productService = productService;
     }
 
-
     @Override
-    public ResponseEntity<CreateNewResponse> createProduct(String requestId, ProductRequest productRequest) {
+    public ResponseEntity<CreateNewResponse> createProduct(ProductRequest productRequest) {
         return ResponseEntity.ok(productService.createProduct(productRequest));
     }
+
 
     @Override
     public ResponseEntity<GetAllProduct> getAllProduct() {

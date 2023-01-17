@@ -20,13 +20,6 @@ paths:
         - Product
       description: create product
       operationId: createProduct
-      parameters:
-        - in: header
-          name: Request-Id
-          schema:
-            type: string
-            example: uuid
-          required: true
       requestBody:
         description: create new product
         required: true
@@ -35,7 +28,7 @@ paths:
             schema:
               $ref: './schemas/sample-request.yaml#/ProductRequest'
       responses:
-        201:
+        200:
           description: Ok
           content:
             application/json:
